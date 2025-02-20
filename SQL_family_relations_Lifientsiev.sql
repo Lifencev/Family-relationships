@@ -57,7 +57,7 @@ AND id = (SELECT father_id
 SELECT ft2.name AS brother_name
 FROM family_tree ft1
 JOIN family_tree ft2 ON ft1.father_id = ft2.father_id OR ft1.mother_id = ft2.mother_id
-WHERE ft1.id = 5
+WHERE ft1.id = 4
   AND ft2.gender = FALSE
   AND ft2.id != ft1.id;
 
@@ -65,7 +65,7 @@ WHERE ft1.id = 5
 SELECT ft2.name AS sister_name
 FROM family_tree ft1
 JOIN family_tree ft2 ON ft1.father_id = ft2.father_id OR ft1.mother_id = ft2.mother_id
-WHERE ft1.id = 5
+WHERE ft1.id = 3
   AND ft2.gender = TRUE
   AND ft2.id != ft1.id;
 
@@ -79,19 +79,29 @@ WITH RECURSIVE Ancestors AS (
     FROM family_tree ft
     JOIN Ancestors a ON ft.id = a.mother_id OR ft.id = a.father_id
     WHERE FIND_IN_SET(ft.id, a.path) = 0
+),
+ancestors_without_self AS (
+    SELECT *
+    FROM ancestors
+    WHERE id != 5
 )
 SELECT name
-FROM Ancestors;
+FROM ancestors_without_self;
 
 -- get descendants
 WITH RECURSIVE descendants AS (
     SELECT *
     FROM family_tree
     WHERE id = 5
-    UNION ALL 
-    SELECT ft.* 
+    UNION ALL
+    SELECT ft.*
     FROM family_tree ft
-    JOIN descendants d ON d.id = ft.mother_id OR d.id = ft.father_id
+    JOIN descendants d ON (d.id = ft.mother_id OR d.id = ft.father_id)
+),
+descendants_without_self AS (
+    SELECT *
+    FROM descendants
+    WHERE id != 5
 )
 SELECT name
-FROM descendants
+FROM descendants_without_self;

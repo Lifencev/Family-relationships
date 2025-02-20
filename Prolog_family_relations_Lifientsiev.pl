@@ -50,7 +50,6 @@ brother(X, Y) :- parent(Z, X), parent(Z, Y), male(X), X \= Y.
 % Define aunt relationship
 aunt(X, Y) :- parent(Z, Y), sister(X, Z).
 
-
 % Define uncle relationship
 uncle(X, Y) :- parent(Z, Y), brother(X, Z).
 
