@@ -59,19 +59,9 @@ nephew(X, Y) :- parent(Y, Z), sister(Z, W), parent(W, X).
 % Define niece relationship
 niece(X, Y) :- parent(Y, Z), brother(Z, W), parent(W, X).
 
+% Define person relationship
 person(X) :- female(X).
 person(X) :- male(X).
-
-% Define person relationship
-person(victoria).
-person(sofia).
-
-% Define man relationship
-man(john).
-man(jim).
-man(peter).
-man(alex).
-man(tom).
 
 % Define woman relationsship
 woman(X) :- person(X), not(male(X)).
